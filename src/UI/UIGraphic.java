@@ -32,7 +32,7 @@ public class UIGraphic extends JFrame {
 	 */
 	public UIGraphic() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 240, 387);
+		setBounds(100, 100, 234, 387);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -54,7 +54,7 @@ public class UIGraphic extends JFrame {
 		longitud.setColumns(10);
 		
 		JLabel lblLatitude = new JLabel("Latitude");
-		lblLatitude.setBounds(122, 11, 45, 14);
+		lblLatitude.setBounds(117, 11, 53, 14);
 		JPanel_Menu.add(lblLatitude);
 		
 		latitude = new JTextField();
@@ -71,11 +71,9 @@ public class UIGraphic extends JFrame {
 		btnBuscar.setBounds(62, 67, 89, 23);
 		contentPane.add(btnBuscar);
 		
-		JButton result0 = new JButton("New button");
-		result0.setForeground(SystemColor.desktop);
-		result0.setBackground(SystemColor.menu);
-		result0.setBounds(0, 101, 224, 42);
-		contentPane.add(result0);
+		JButton results0 = new JButton("New button");
+		results0.setBounds(0, 100, 224, 42);
+		contentPane.add(results0);
 		
 		JButton result1 = new JButton("New button");
 		result1.setBounds(0, 142, 224, 42);
