@@ -12,27 +12,19 @@ import java.awt.SystemColor;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import Entities.*;
 
 public class UIGraphic extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField textField;
-	private JTextField textField_1;
+	private static JTextField longitud;
+	private static JTextField latitude;
 
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					UIGraphic frame = new UIGraphic();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
+		
 	}
 
 	/**
@@ -56,21 +48,26 @@ public class UIGraphic extends JFrame {
 		lblLongitude.setBounds(21, 11, 60, 14);
 		JPanel_Menu.add(lblLongitude);
 		
-		textField = new JTextField();
-		textField.setBounds(21, 25, 86, 20);
-		JPanel_Menu.add(textField);
-		textField.setColumns(10);
+		longitud = new JTextField();
+		longitud.setBounds(21, 25, 86, 20);
+		JPanel_Menu.add(longitud);
+		longitud.setColumns(10);
 		
 		JLabel lblLatitude = new JLabel("Latitude");
 		lblLatitude.setBounds(122, 11, 45, 14);
 		JPanel_Menu.add(lblLatitude);
 		
-		textField_1 = new JTextField();
-		textField_1.setBounds(117, 25, 86, 20);
-		JPanel_Menu.add(textField_1);
-		textField_1.setColumns(10);
+		latitude = new JTextField();
+		latitude.setBounds(117, 25, 86, 20);
+		JPanel_Menu.add(latitude);
+		latitude.setColumns(10);
 		
 		JButton btnBuscar = new JButton("Buscar");
+		btnBuscar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Controller.buscaCercanos();
+			}
+		});
 		btnBuscar.setBounds(62, 67, 89, 23);
 		contentPane.add(btnBuscar);
 		
@@ -99,5 +96,21 @@ public class UIGraphic extends JFrame {
 		JButton result5 = new JButton("New button");
 		result5.setBounds(0, 305, 224, 42);
 		contentPane.add(result5);
+	}
+
+	public static JTextField getLongitud() {
+		return longitud;
+	}
+
+	public static void setLongitud(JTextField longitud) {
+		UIGraphic.longitud = longitud;
+	}
+
+	public static JTextField getLatitude() {
+		return latitude;
+	}
+
+	public static void setLatitude(JTextField latitude) {
+		UIGraphic.latitude = latitude;
 	}
 }
