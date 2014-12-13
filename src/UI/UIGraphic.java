@@ -65,7 +65,7 @@ public class UIGraphic extends JFrame {
 		JButton btnSearch = new JButton("Search");
 		btnSearch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Controller.buscaCercanos();
+//				Controller.getDistance();
 			}
 		});
 		btnSearch.setBounds(62, 67, 89, 23);

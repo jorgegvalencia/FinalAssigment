@@ -2,7 +2,12 @@ package Entities;
 
 import java.awt.EventQueue;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
+import java.util.TreeMap;
 
 import UI.UIGraphic;
 
@@ -30,58 +35,92 @@ import com.hp.hpl.jena.util.iterator.ExtendedIterator;
 import com.hp.hpl.jena.vocabulary.VCARD;
 
 public class Controller {
-
+	private static int nSitio = 1;
+	private Map<Integer,Sitio> sitiosCercanos;
+	private ValueComparator vcp;
+	private TreeMap<Integer, Sitio> sortedMap;
 
 	public Controller() {
-
-	}
-
-	public LinkedList sitiosCercanos(Integer latitud, Integer longitud) {
-		return null;
+		this.sitiosCercanos = new HashMap<Integer,Sitio>();
 	}
 
 	public void readingRDF(){
+		this.nSitio = 1;
+		String tipo, nombre, horario, email, telefono, direccion, codigoPostal;
+		boolean accesible;
 		// create an empty model
 		Model model = ModelFactory.createDefaultModel();
 		// read the RDF/XML file
 		model.read("resources/Museos-updated.ttl", "TTL");
+//		model.read("resources/Monumentos-updated.ttl", "TTL");
+//		model.read("resources/PuntosInfoTuristica-updated.ttl", "TTL");
 		// write it to standard out
-		model.write(System.out,"TTL");
+//		model.write(System.out,"TTL");
 		// List all the resources with the properties "geo:lat and geo:long"
 		String queryString =
 				"PREFIX geo: <http://www.w3.org/2003/01/geo/wgs84_pos#> \n" +
 						"PREFIX schema: <http://schema.org/> " +
-						"SELECT ?Latitude ?Longitude ?postalCode "+
+						"PREFIX base: <http://www.example.org/ontology/TourismMadrid#> " +
+						"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
+						"SELECT ?Type ?Name ?Schedule ?Accessible ?Telephone ?Email ?Address ?PostalCode ?Latitude ?Longitude "+
 						"WHERE {" +
+						"?x a ?Type .\n"+
+						"?x rdfs:label ?Name .\n"+
+						"?x base:schedule ?Schedule .\n"+
+						"?x base:accessibility ?Accessible .\n"+
+						"?x schema:telephone ?Telephone .\n"+
+						"?x schema:email ?Email . \n" +
+						"?x schema:streetAddress ?Address .\n"+
+						"?x schema:postalCode ?PostalCode. \n" +
 						"?x geo:lat ?Latitude .\n"+
-						"?x geo:long ?Longitude . \n"+
-						"?x schema:postalCode ?postalCode.} ";
+						"?x geo:long ?Longitude . } ";
 		Query query = QueryFactory.create(queryString);
 		QueryExecution qexec = QueryExecutionFactory.create(query, model) ;
 		ResultSet results = qexec.execSelect() ;
 		while (results.hasNext())
 		{
 			QuerySolution binding = results.nextSolution();
-			Literal latitud = binding.getLiteral("Latitude");
-			Literal longitud = binding.getLiteral("Longitude");
-			Literal postalCode = binding.getLiteral("postalCode");
-			System.out.println("Latitud: "+latitud);
-			System.out.println("Longitud: "+longitud);
-			System.out.println("CodPostal: "+postalCode);
+			double latitud = binding.getLiteral("Latitude").getDouble();
+			double longitud = binding.getLiteral("Longitude").getDouble();
+			double distancia = getDistance(latitud, longitud);
+			if(distancia < km){
+				tipo = binding.getLiteral("Type").getString();
+				nombre = binding.getLiteral("Name").getString();
+				horario = binding.getLiteral("Schedule").getString();
+				accesible = binding.getLiteral("Accessible").getBoolean();
+				email = binding.getLiteral("Email").getString();
+				telefono = binding.getLiteral("Telephone").getString();
+				direccion = binding.getLiteral("Address").getString();
+				codigoPostal = binding.getLiteral("PostalCode").getString();
+				
+				//Crear objeto
+				this.sitiosCercanos.put(nSitio, new Sitio(tipo
+						, nombre
+						, direccion
+						, accesible
+						, latitud
+						, longitud
+						, codigoPostal
+						, telefono
+						, email
+						, distancia));
+				nSitio++;
+			}
 		}
+		// Ordenar sitios por cercania
+		this.vcp = new ValueComparator(sitiosCercanos);
+		this.sortedMap = new TreeMap<Integer,Sitio>(vcp);
 	}
 
-	public static void buscaCercanos(){
-
+	public static double getDistance(double lat1, double long1){
 		//Recogemos los campos
-		Double latitude = Double.parseDouble(UIGraphic.getLatitude().getText());
-		Double longitude = Double.parseDouble(UIGraphic.getLatitude().getText());
-
-
-	}
+		double latitude = Double.parseDouble(UIGraphic.getLatitude().getText());
+		double longitude = Double.parseDouble(UIGraphic.getLatitude().getText());
+		return geoDistanceInKm(lat1, long1, latitude, longitude);
+		}
 
 	/**
-	 * Distancia entre dos puntos geográficas. Debe meterse en grados
+	 * Distancia entre dos puntos geogrÃ¡ficas. Debe meterse en grados
 	 * 
 	 * @param firstLatitude
 	 *            Latitude del primer punto
@@ -95,14 +134,13 @@ public class Controller {
 	 * @return Distancia en Km entre dos puntos
 	 */
 	public static double geoDistanceInKm(double firstLatitude,
-		
 		double firstLongitude, double secondLatitude, double secondLongitude) {
 
-		// Conversion de grados a radiaanes
+		// Conversion de grados a radianes
 		double firstLatToRad = Math.toRadians(firstLatitude);
 		double secondLatToRad = Math.toRadians(secondLatitude);
 
-		// Diferença das longitudes
+		// Diferencia de longitudes
 		double deltaLongitudeInRad = Math.toRadians(secondLongitude
 				- firstLongitude);
 
@@ -116,14 +154,13 @@ public class Controller {
 
 	public static void main(String[] args){
 
-		Controller nuevo = new Controller();
-		nuevo.readingRDF();
-
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
 					UIGraphic frame = new UIGraphic();
 					frame.setVisible(true);
+					Controller nuevo = new Controller();
+					nuevo.readingRDF();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

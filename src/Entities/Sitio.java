@@ -2,6 +2,8 @@ package Entities;
 
 public class Sitio {
 
+	public String type;
+	
 	public String name;
 
 	public String address;
@@ -12,26 +14,26 @@ public class Sitio {
 
 	public Double longitude;
 
-	public String city;
-
 	public String postalCode;
 
 	public String telephone;
 
 	public String email;
+	
+	public double distance;
 
-	public Sitio(String name, String address, boolean accesibility,
-			Double latitude, Double longitude, String city, String postalCode,
-			String telephone, String email) {
+	public Sitio(String type, String name, String address, boolean accesibility,
+			double latitude, double longitude, String postalCode,
+			String telephone, String email, double distance) {
 		this.name = name;
 		this.address = address;
 		this.accesibility = accesibility;
 		this.latitude = latitude;
 		this.longitude = longitude;
-		this.city = city;
 		this.postalCode = postalCode;
 		this.telephone = telephone;
 		this.email = email;
+		this.distance = distance;
 	}
 
 
