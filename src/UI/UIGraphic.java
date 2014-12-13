@@ -32,7 +32,7 @@ public class UIGraphic extends JFrame {
 	 */
 	public UIGraphic() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 234, 387);
+		setBounds(100, 100, 240, 387);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -62,14 +62,14 @@ public class UIGraphic extends JFrame {
 		JPanel_Menu.add(latitude);
 		latitude.setColumns(10);
 		
-		JButton btnBuscar = new JButton("Buscar");
-		btnBuscar.addActionListener(new ActionListener() {
+		JButton btnSearch = new JButton("Search");
+		btnSearch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 //				Controller.getDistance();
 			}
 		});
-		btnBuscar.setBounds(62, 67, 89, 23);
-		contentPane.add(btnBuscar);
+		btnSearch.setBounds(62, 67, 89, 23);
+		contentPane.add(btnSearch);
 		
 		JButton results0 = new JButton("New button");
 		results0.setBounds(0, 100, 224, 42);
