@@ -65,7 +65,7 @@ public class UIGraphic extends JFrame {
 		JButton btnBuscar = new JButton("Buscar");
 		btnBuscar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Controller.buscaCercanos();
+//				Controller.getDistance();
 			}
 		});
 		btnBuscar.setBounds(62, 67, 89, 23);
