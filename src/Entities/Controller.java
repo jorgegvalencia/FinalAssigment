@@ -36,16 +36,16 @@ public class Controller {
 		 Model model = ModelFactory.createDefaultModel();
 
 		// read the RDF/XML file
-		model.read("./resources/Monumentos-updated.ttl", "TTL");
+		model.read("resources/Monumentos-updated.ttl", "TTL");
 
 		// write it to standard out
-		model.write(System.out);
+		model.write(System.out,"TTL");
 		
 		//IDEA: Extraer los campos e ir creando los objetos -> despues trabajar con objetos		
-		StmtIterator iterador = model.listStatements();
-		while(iterador.hasNext()){
-			System.out.println(iterador.next());
-		}
+//		StmtIterator iterador = model.listStatements();
+//		while(iterador.hasNext()){
+//			System.out.println(iterador.next());
+//		}
 	}
 
 	public static void main(String[] args){
