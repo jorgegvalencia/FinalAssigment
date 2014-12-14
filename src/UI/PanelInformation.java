@@ -7,14 +7,14 @@ import java.awt.event.ActionEvent;
 public class PanelInformation extends JPanel {
 
 	private static final long serialVersionUID = 1L;
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
-	private JTextField textField_3;
-	private JTextField textField_4;
-	private JTextField textField_5;
-	private JTextField textField_6;
-	private JTextField textField_7;
+	static JTextField textField;
+	static JTextField textField_1;
+	static JTextField textField_2;
+	static JTextField textField_3;
+	static JTextField textField_4;
+	static JTextField textField_5;
+	static JTextField textField_6;
+	static JTextField textField_7;
 	public PanelInformation() {
 		setLayout(null);
 
