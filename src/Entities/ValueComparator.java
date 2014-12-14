@@ -11,11 +11,14 @@ public class ValueComparator implements Comparator<Integer>{
 	}
 	@Override
 	public int compare(Integer o1, Integer o2) {
-		if(base.get(o1).distance >= base.get(o2).distance){
-			return -1;
+		if(base.get(o1).distance > base.get(o2).distance){
+			return 1;
+		}
+		else if(base.get(o1).distance > base.get(o2).distance){
+			return 0;
 		}
 		else{
-			return 1;
+			return -1;
 		}
 	}
 }

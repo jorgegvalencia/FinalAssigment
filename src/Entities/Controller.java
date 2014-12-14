@@ -1,42 +1,22 @@
 package Entities;
 
 import java.awt.EventQueue;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
 import java.util.TreeMap;
 
 import UI.UIGraphic;
 
-import com.hp.hpl.jena.datatypes.RDFDatatype;
-import com.hp.hpl.jena.graph.Node;
 import com.hp.hpl.jena.query.Query;
 import com.hp.hpl.jena.query.QueryExecution;
 import com.hp.hpl.jena.query.QueryExecutionFactory;
 import com.hp.hpl.jena.query.QueryFactory;
 import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
-import com.hp.hpl.jena.rdf.model.AnonId;
-import com.hp.hpl.jena.rdf.model.Literal;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
-import com.hp.hpl.jena.rdf.model.Property;
-import com.hp.hpl.jena.rdf.model.RDFNode;
-import com.hp.hpl.jena.rdf.model.RDFVisitor;
-import com.hp.hpl.jena.rdf.model.ResIterator;
 import com.hp.hpl.jena.rdf.model.Resource;
-import com.hp.hpl.jena.rdf.model.Statement;
-import com.hp.hpl.jena.rdf.model.StmtIterator;
-import com.hp.hpl.jena.util.FileManager;
-import com.hp.hpl.jena.util.iterator.ExtendedIterator;
-import com.hp.hpl.jena.vocabulary.VCARD;
 
 public class Controller {
 	private static int nSitio = 1;
@@ -46,11 +26,14 @@ public class Controller {
 
 	public Controller() {
 		this.sitiosCercanos = new HashMap<Integer,Sitio>();
+		// Ordenar sitios por cercania
+		vcp = new ValueComparator(sitiosCercanos);
+		sortedMap = new TreeMap<Integer,Sitio>(vcp);
 	}
 
 	public static void readingRDF(){
 		nSitio = 1;
-		String tipo, nombre, horario, email, telefono, direccion, codigoPostal;
+		String tipo, nombre, telefono, direccion, codigoPostal;
 		boolean accesible;
 		// create an empty model
 		Model model = ModelFactory.createDefaultModel();
@@ -80,6 +63,7 @@ public class Controller {
 		QueryExecution qexec = QueryExecutionFactory.create(query, model) ;
 		ResultSet results = qexec.execSelect() ;
 		int i = 1;
+		
 		while (results.hasNext())
 		{
 			QuerySolution binding = results.nextSolution();
@@ -113,19 +97,18 @@ public class Controller {
 						, distancia));
 				nSitio++;
 			}
+			
 		}
-		// Ordenar sitios por cercania
-		vcp = new ValueComparator(sitiosCercanos);
-		sortedMap = new TreeMap<Integer,Sitio>(vcp);
+		sortedMap.putAll(sitiosCercanos);
 		
-		//Print del hashmap
-		for (Entry<Integer, Sitio> elemento : sitiosCercanos.entrySet()) {
-		     System.out.println(elemento.getKey() + " _ " + elemento.getValue().getDistance());
-		}
+//		//Print del hashmap
+//		for (Entry<Integer, Sitio> elemento : sitiosCercanos.entrySet()) {
+//		     System.out.println(elemento.getKey() + " _ " + elemento.getValue().getDistance());
+//		}
 		
 		//Print del sortedMap
 		for (Entry<Integer, Sitio> elemento : sortedMap.entrySet()) {
-		    System.out.println(elemento.getKey() + " _ " + elemento.getValue().getName());
+		    System.out.println(elemento.getKey() + ". \t" + elemento.getValue().getDistance());
 		}
 
 	}
