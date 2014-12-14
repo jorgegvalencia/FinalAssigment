@@ -25,12 +25,16 @@ public class Controller {
 	private static TreeMap<Integer, Sitio> sortedMap;
 
 	public Controller() {
-		sitiosCercanos = new HashMap<Integer,Sitio>();
+		this.sitiosCercanos = new HashMap<Integer,Sitio>();
+		// Ordenar sitios por cercania
+		vcp = new ValueComparator(sitiosCercanos);
+		sortedMap = new TreeMap<Integer,Sitio>(vcp);
+
 	}
 
 	public static void readingRDF(){
 		nSitio = 1;
-		String tipo, nombre, horario, email, telefono, direccion, codigoPostal;
+		String tipo, nombre, telefono, direccion, codigoPostal;
 		boolean accesible;
 		// create an empty model
 		Model model = ModelFactory.createDefaultModel();
@@ -59,6 +63,7 @@ public class Controller {
 		Query query = QueryFactory.create(queryString);
 		QueryExecution qexec = QueryExecutionFactory.create(query, model) ;
 		ResultSet results = qexec.execSelect() ;
+		int i = 1;
 
 		while (results.hasNext())
 		{
@@ -92,21 +97,19 @@ public class Controller {
 						, distancia));
 				nSitio++;
 			}
+			
 		}
-		// Ordenar sitios por cercania
-		vcp = new ValueComparator(sitiosCercanos);
-		sortedMap = new TreeMap<Integer,Sitio>(vcp);
-
-		//Print del hashmap
-		for (Entry<Integer, Sitio> elemento : sitiosCercanos.entrySet()) {
-			System.out.println(elemento.getKey() + " _ " + elemento.getValue().getDistance());
-		}
-
+		sortedMap.putAll(sitiosCercanos);
+		
+//		//Print del hashmap
+//		for (Entry<Integer, Sitio> elemento : sitiosCercanos.entrySet()) {
+//		     System.out.println(elemento.getKey() + " _ " + elemento.getValue().getDistance());
+//		}
+		
 		//Print del sortedMap
 		for (Entry<Integer, Sitio> elemento : sortedMap.entrySet()) {
-			System.out.println(elemento.getKey() + " _ " + elemento.getValue().getName());
+		    System.out.println(elemento.getKey() + ". \t" + elemento.getValue().getDistance());
 		}
-
 	}
 
 	public static double getDistance(double lat1, double long1){
