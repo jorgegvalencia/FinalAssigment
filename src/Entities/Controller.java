@@ -100,15 +100,14 @@ public class Controller {
 			
 		}
 		sortedMap.putAll(sitiosCercanos);
-		
-//		//Print del hashmap
-//		for (Entry<Integer, Sitio> elemento : sitiosCercanos.entrySet()) {
-//		     System.out.println(elemento.getKey() + " _ " + elemento.getValue().getDistance());
-//		}
-		
 		//Print del sortedMap
+		int t=0;
 		for (Entry<Integer, Sitio> elemento : sortedMap.entrySet()) {
 		    System.out.println(elemento.getKey() + ". \t" + elemento.getValue().getDistance());
+		    if(t<6){
+		    	UIGraphic.buttons[t].setText((elemento.getValue().name));
+		    }
+		    t++;
 		}
 	}
 

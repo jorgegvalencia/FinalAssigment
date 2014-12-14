@@ -18,10 +18,20 @@ public class UIGraphic extends JFrame {
 	private static JTextField longitud;
 	private static JTextField latitude;
 	
+	static JButton results0;
+	static JButton result1;
+	static JButton result2;
+	static JButton result3;
+	static JButton result4;
+	static JButton result5;
+	
+	public static JButton[] buttons = new JButton[6];
+	
 	/**
 	 * Create the frame.
 	 */
 	public UIGraphic() {
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 240, 387);
 		contentPane = new JPanel();
@@ -56,36 +66,42 @@ public class UIGraphic extends JFrame {
 		JButton btnSearch = new JButton("Search");
 		btnSearch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-//				Controller.getDistance();
 				Controller.readingRDF();
 			}
 		});
 		btnSearch.setBounds(62, 67, 89, 23);
 		contentPane.add(btnSearch);
 		
-		JButton results0 = new JButton("New button");
+		results0 = new JButton("New button");
 		results0.setBounds(0, 100, 224, 42);
 		contentPane.add(results0);
 		
-		JButton result1 = new JButton("New button");
+		result1 = new JButton("New button");
 		result1.setBounds(0, 142, 224, 42);
 		contentPane.add(result1);
 		
-		JButton result2 = new JButton("New button");
+		result2 = new JButton("New button");
 		result2.setBounds(0, 183, 224, 42);
 		contentPane.add(result2);
 		
-		JButton result3 = new JButton("New button");
+		result3 = new JButton("New button");
 		result3.setBounds(0, 225, 224, 42);
 		contentPane.add(result3);
 		
-		JButton result4 = new JButton("New button");
+		result4 = new JButton("New button");
 		result4.setBounds(0, 266, 224, 42);
 		contentPane.add(result4);
 		
-		JButton result5 = new JButton("New button");
+		result5 = new JButton("New button");
 		result5.setBounds(0, 305, 224, 42);
 		contentPane.add(result5);
+		
+		buttons[0]=results0;
+		buttons[1]=result1;
+		buttons[2]=result2;
+		buttons[3]=result3;
+		buttons[4]=result4;
+		buttons[5]=result5;
 	}
 
 	public static JTextField getLongitud() {
