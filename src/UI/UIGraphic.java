@@ -1,8 +1,5 @@
 package UI;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -44,28 +41,29 @@ public class UIGraphic extends JFrame {
 		contentPane.add(JPanel_Menu);
 		JPanel_Menu.setLayout(null);
 		
-		JLabel lblLongitude = new JLabel("Longitude");
-		lblLongitude.setBounds(21, 11, 60, 14);
-		JPanel_Menu.add(lblLongitude);
-		
-		longitud = new JTextField();
-		longitud.setBounds(21, 25, 86, 20);
-		JPanel_Menu.add(longitud);
-		longitud.setColumns(10);
-		
 		JLabel lblLatitude = new JLabel("Latitude");
-		lblLatitude.setBounds(117, 11, 53, 14);
+		lblLatitude.setBounds(21, 11, 53, 14);
 		JPanel_Menu.add(lblLatitude);
 		
 		latitude = new JTextField();
-		latitude.setBounds(117, 25, 86, 20);
+		latitude.setBounds(21, 25, 86, 20);
 		JPanel_Menu.add(latitude);
 		latitude.setColumns(10);
+		
+		longitud = new JTextField();
+		longitud.setBounds(117, 25, 86, 20);
+		JPanel_Menu.add(longitud);
+		longitud.setColumns(10);
+		
+		JLabel lblLongitude = new JLabel("Longitude");
+		lblLongitude.setBounds(117, 11, 60, 14);
+		JPanel_Menu.add(lblLongitude);
 		
 		JButton btnSearch = new JButton("Search");
 		btnSearch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 //				Controller.getDistance();
+				Controller.readingRDF();
 			}
 		});
 		btnSearch.setBounds(62, 67, 89, 23);

@@ -3,11 +3,14 @@ package Entities;
 import java.awt.EventQueue;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 import java.util.TreeMap;
 
 import UI.UIGraphic;
@@ -37,16 +40,16 @@ import com.hp.hpl.jena.vocabulary.VCARD;
 
 public class Controller {
 	private static int nSitio = 1;
-	private Map<Integer,Sitio> sitiosCercanos;
-	private ValueComparator vcp;
-	private TreeMap<Integer, Sitio> sortedMap;
+	private static Map<Integer,Sitio> sitiosCercanos;
+	private static ValueComparator vcp;
+	private static TreeMap<Integer, Sitio> sortedMap;
 
 	public Controller() {
 		this.sitiosCercanos = new HashMap<Integer,Sitio>();
 	}
 
-	public void readingRDF(){
-		this.nSitio = 1;
+	public static void readingRDF(){
+		nSitio = 1;
 		String tipo, nombre, horario, email, telefono, direccion, codigoPostal;
 		boolean accesible;
 		// create an empty model
@@ -56,7 +59,7 @@ public class Controller {
 		model.read("resources/Monumentos-updated.ttl", "TTL");
 		model.read("resources/PuntosInfoTuristica-updated.ttl", "TTL");
 		// write it to standard out
-//		model.write(System.out,"TTL");
+		//		model.write(System.out,"TTL");
 		// List all the resources with the properties "geo:lat and geo:long"
 		String queryString =
 				"PREFIX geo: <http://www.w3.org/2003/01/geo/wgs84_pos#> \n" +
@@ -85,20 +88,20 @@ public class Controller {
 			double distancia = getDistance(latitud, longitud);
 			String name = binding.getLiteral("Name").toString();
 			Resource type = binding.getResource("Type");
-			System.out.println(i + ". " + name +" "+ type.toString());
+			//System.out.println(i + ". " + name +" "+ type.toString());
 			i++;
-			if(distancia < 10){
-				tipo = binding.getLiteral("Type").getString();
+			if(distancia < 16){
+				tipo = binding.getResource("Type").toString();
 				nombre = binding.getLiteral("Name").getString();
-				horario = binding.getLiteral("Schedule").getString();
+				//horario = binding.getLiteral("Schedule").getString();
 				accesible = binding.getLiteral("Accessible").getBoolean();
-				email = binding.getLiteral("Email").getString();
+				//email = binding.getLiteral("Email").getString();
 				telefono = binding.getLiteral("Telephone").getString();
 				direccion = binding.getLiteral("Address").getString();
 				codigoPostal = binding.getLiteral("PostalCode").getString();
-				
+
 				//Crear objeto
-				this.sitiosCercanos.put(nSitio, new Sitio(tipo
+				sitiosCercanos.put(nSitio, new Sitio(tipo
 						, nombre
 						, direccion
 						, accesible
@@ -106,22 +109,33 @@ public class Controller {
 						, longitud
 						, codigoPostal
 						, telefono
-						, email
+						//, email
 						, distancia));
 				nSitio++;
 			}
 		}
 		// Ordenar sitios por cercania
-		this.vcp = new ValueComparator(sitiosCercanos);
-		this.sortedMap = new TreeMap<Integer,Sitio>(vcp);
+		vcp = new ValueComparator(sitiosCercanos);
+		sortedMap = new TreeMap<Integer,Sitio>(vcp);
+		
+		//Print del hashmap
+		for (Entry<Integer, Sitio> elemento : sitiosCercanos.entrySet()) {
+		     System.out.println(elemento.getKey() + " _ " + elemento.getValue().getDistance());
+		}
+		
+		//Print del sortedMap
+		for (Entry<Integer, Sitio> elemento : sortedMap.entrySet()) {
+		    System.out.println(elemento.getKey() + " _ " + elemento.getValue().getName());
+		}
+
 	}
 
 	public static double getDistance(double lat1, double long1){
 		//Recogemos los campos
 		double latitude = Double.parseDouble(UIGraphic.getLatitude().getText());
-		double longitude = Double.parseDouble(UIGraphic.getLatitude().getText());
+		double longitude = Double.parseDouble(UIGraphic.getLongitud().getText());
 		return geoDistanceInKm(lat1, long1, latitude, longitude);
-		}
+	}
 
 	/**
 	 * Distancia entre dos puntos geográficas. Debe meterse en grados
@@ -138,8 +152,9 @@ public class Controller {
 	 * @return Distancia en Km entre dos puntos
 	 */
 	public static double geoDistanceInKm(double firstLatitude,
-		double firstLongitude, double secondLatitude, double secondLongitude) {
+			double firstLongitude, double secondLatitude, double secondLongitude) {
 
+		//System.out.println(firstLatitude+" "+firstLongitude+" "+secondLatitude+" "+secondLongitude);
 		// Conversion de grados a radianes
 		double firstLatToRad = Math.toRadians(firstLatitude);
 		double secondLatToRad = Math.toRadians(secondLatitude);
@@ -158,13 +173,14 @@ public class Controller {
 
 	public static void main(String[] args){
 
+		System.out.println(Controller.geoDistanceInKm(40.2836326, -3.7935657, 40.4074732, -3.827858));
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
 					UIGraphic frame = new UIGraphic();
 					frame.setVisible(true);
 					Controller nuevo = new Controller();
-					nuevo.readingRDF();
+					//nuevo.readingRDF();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
