@@ -13,17 +13,11 @@ import Entities.*;
 
 public class UIGraphic extends JFrame {
 
+	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private static JTextField longitud;
 	private static JTextField latitude;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		
-	}
-
+	
 	/**
 	 * Create the frame.
 	 */

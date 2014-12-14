@@ -29,6 +29,7 @@ public class Controller {
 		// Ordenar sitios por cercania
 		vcp = new ValueComparator(sitiosCercanos);
 		sortedMap = new TreeMap<Integer,Sitio>(vcp);
+
 	}
 
 	public static void readingRDF(){
@@ -63,7 +64,7 @@ public class Controller {
 		QueryExecution qexec = QueryExecutionFactory.create(query, model) ;
 		ResultSet results = qexec.execSelect() ;
 		int i = 1;
-		
+
 		while (results.hasNext())
 		{
 			QuerySolution binding = results.nextSolution();
@@ -73,7 +74,6 @@ public class Controller {
 			String name = binding.getLiteral("Name").toString();
 			Resource type = binding.getResource("Type");
 			//System.out.println(i + ". " + name +" "+ type.toString());
-			i++;
 			if(distancia < 16){
 				tipo = binding.getResource("Type").toString();
 				nombre = binding.getLiteral("Name").getString();
@@ -110,7 +110,6 @@ public class Controller {
 		for (Entry<Integer, Sitio> elemento : sortedMap.entrySet()) {
 		    System.out.println(elemento.getKey() + ". \t" + elemento.getValue().getDistance());
 		}
-
 	}
 
 	public static double getDistance(double lat1, double long1){
