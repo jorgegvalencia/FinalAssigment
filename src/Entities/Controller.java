@@ -32,6 +32,10 @@ public class Controller {
 
 	}
 
+	public static TreeMap<Integer, Sitio> getSortedMap() {
+		return sortedMap;
+	}
+
 	public static void readingRDF(){
 		nSitio = 1;
 		String tipo, nombre, telefono, direccion, codigoPostal;
@@ -74,7 +78,7 @@ public class Controller {
 			String name = binding.getLiteral("Name").toString();
 			Resource type = binding.getResource("Type");
 			//System.out.println(i + ". " + name +" "+ type.toString());
-			if(distancia < 16){
+			if(distancia < 20){
 				tipo = binding.getResource("Type").toString();
 				nombre = binding.getLiteral("Name").getString();
 				//horario = binding.getLiteral("Schedule").getString();
@@ -153,7 +157,6 @@ public class Controller {
 	}
 
 	public static void main(String[] args){
-
 		System.out.println(Controller.geoDistanceInKm(40.2836326, -3.7935657, 40.4074732, -3.827858));
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {

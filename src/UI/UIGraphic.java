@@ -5,10 +5,15 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+
 import java.awt.SystemColor;
+
 import javax.swing.JButton;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.util.Map.Entry;
+
 import Entities.*;
 
 public class UIGraphic extends JFrame {
@@ -17,6 +22,7 @@ public class UIGraphic extends JFrame {
 	private JPanel contentPane;
 	private static JTextField longitud;
 	private static JTextField latitude;
+	private PanelInformation info = new PanelInformation();
 	
 	static JButton results0;
 	static JButton result1;
@@ -75,26 +81,69 @@ public class UIGraphic extends JFrame {
 		results0 = new JButton("New button");
 		results0.setBounds(0, 100, 224, 42);
 		contentPane.add(results0);
+		results0.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				info.setVisible(true);
+				contentPane.setVisible(false);	
+				int t=0;
+				for (Entry<Integer, Sitio> elemento : Controller.getSortedMap().entrySet()) {
+				    if(t==1){
+				    	PanelInformation.textField.setText((elemento.getValue().name));
+				    }
+				    t++;
+				}
+			}
+		});
 		
 		result1 = new JButton("New button");
 		result1.setBounds(0, 142, 224, 42);
 		contentPane.add(result1);
+		result1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				info.setVisible(true);
+				contentPane.setVisible(false);
+			}
+		});
 		
 		result2 = new JButton("New button");
 		result2.setBounds(0, 183, 224, 42);
 		contentPane.add(result2);
+		result2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				info.setVisible(true);
+				contentPane.setVisible(false);
+			}
+		});
 		
 		result3 = new JButton("New button");
 		result3.setBounds(0, 225, 224, 42);
 		contentPane.add(result3);
+		result3.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				info.setVisible(true);
+				contentPane.setVisible(false);
+			}
+		});
 		
 		result4 = new JButton("New button");
 		result4.setBounds(0, 266, 224, 42);
 		contentPane.add(result4);
+		result4.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				info.setVisible(true);
+				contentPane.setVisible(false);
+			}
+		});
 		
 		result5 = new JButton("New button");
 		result5.setBounds(0, 305, 224, 42);
 		contentPane.add(result5);
+		result5.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				info.setVisible(true);
+				contentPane.setVisible(false);
+			}
+		});
 		
 		buttons[0]=results0;
 		buttons[1]=result1;
