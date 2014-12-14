@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.TreeMap;
@@ -52,8 +53,8 @@ public class Controller {
 		Model model = ModelFactory.createDefaultModel();
 		// read the RDF/XML file
 		model.read("resources/Museos-updated.ttl", "TTL");
-//		model.read("resources/Monumentos-updated.ttl", "TTL");
-//		model.read("resources/PuntosInfoTuristica-updated.ttl", "TTL");
+		model.read("resources/Monumentos-updated.ttl", "TTL");
+		model.read("resources/PuntosInfoTuristica-updated.ttl", "TTL");
 		// write it to standard out
 //		model.write(System.out,"TTL");
 		// List all the resources with the properties "geo:lat and geo:long"
@@ -62,14 +63,12 @@ public class Controller {
 						"PREFIX schema: <http://schema.org/> " +
 						"PREFIX base: <http://www.example.org/ontology/TourismMadrid#> " +
 						"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
-						"SELECT ?Type ?Name ?Schedule ?Accessible ?Telephone ?Email ?Address ?PostalCode ?Latitude ?Longitude "+
+						"SELECT DISTINCT ?Type ?Name ?Accessible ?Telephone ?Email ?Address ?PostalCode ?Latitude ?Longitude "+
 						"WHERE {" +
 						"?x a ?Type .\n"+
 						"?x rdfs:label ?Name .\n"+
-						"?x base:schedule ?Schedule .\n"+
 						"?x base:accessibility ?Accessible .\n"+
 						"?x schema:telephone ?Telephone .\n"+
-						"?x schema:email ?Email . \n" +
 						"?x schema:streetAddress ?Address .\n"+
 						"?x schema:postalCode ?PostalCode. \n" +
 						"?x geo:lat ?Latitude .\n"+
@@ -77,13 +76,18 @@ public class Controller {
 		Query query = QueryFactory.create(queryString);
 		QueryExecution qexec = QueryExecutionFactory.create(query, model) ;
 		ResultSet results = qexec.execSelect() ;
+		int i = 1;
 		while (results.hasNext())
 		{
 			QuerySolution binding = results.nextSolution();
 			double latitud = binding.getLiteral("Latitude").getDouble();
 			double longitud = binding.getLiteral("Longitude").getDouble();
 			double distancia = getDistance(latitud, longitud);
-			if(distancia < km){
+			String name = binding.getLiteral("Name").toString();
+			Resource type = binding.getResource("Type");
+			System.out.println(i + ". " + name +" "+ type.toString());
+			i++;
+			if(distancia < 10){
 				tipo = binding.getLiteral("Type").getString();
 				nombre = binding.getLiteral("Name").getString();
 				horario = binding.getLiteral("Schedule").getString();
